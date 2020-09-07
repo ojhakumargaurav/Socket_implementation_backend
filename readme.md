@@ -1,6 +1,7 @@
 # to run this project in docker 
 
 docker build . -t <app_name>
+
 docker run -p <port_no>:8081 <app_name>
 
 # Socket implementation along with Yolo object detection
