@@ -12,6 +12,6 @@ frontend for the project can be found in Vue js at below mention repo URL:
 
 https://github.com/ojhakumargaurav/Vue-Socket-and-camera-implementation
 
-download the yolo-coco weights and cfg files and names file from following google drive:
+download the yolo-coco weights and cfg files and names file from following google drive and place under the source folder:
 
 https://drive.google.com/drive/folders/12QHspKJ1uWp-A8hAP7l_-b-2QWcysiL7?usp=sharing
