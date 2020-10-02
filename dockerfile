@@ -5,6 +5,8 @@ WORKDIR /app
 
 # Install app dependencies
 COPY ./requirements.txt ./
+RUN apt-get install libx264-dev
+RUN apt install ffmpeg
 
 RUN pip install -r requirements.txt
 

@@ -1,2 +1,5 @@
 /.vscode
-**yolo-coco**
+Pre_trained_models/*
+*.pyc
+*.mp4
+*.webm

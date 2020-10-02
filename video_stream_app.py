@@ -1,10 +1,13 @@
 from flask import Flask, render_template
-from flask_socketio import SocketIO, emit, send
-from yolo_video import YoloNetwork
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from utils.yolo_video import YoloNetwork
+from utils.face_recognise_utils import RecognizeFace
 import base64
 app = Flask(__name__)
 
-socketio = SocketIO(app, cors_allowed_origins="*", logger=True)
+socketio = SocketIO(app, cors_allowed_origins="*",
+                    logger=True, ping_timeout=2000, ping_interval=2000)
+SocketIO()
 
 # @app.route('/')
 # def index():
@@ -17,24 +20,35 @@ def test_message(message):
     emit("pingServer", {'data': message})
 
 
-@socketio.on('video_frame')
-def test_video_streaming(video_file):
-    print("video file receiving")
+@socketio.on('run_yolo')
+def run_pre_trained_yolo(video_file_with_user_details):
     yn = YoloNetwork()
-    final_video_bytes = yn.run_yolo(video_file)
-    emit("send_video", final_video_bytes)
+    final_video_bytes = yn.process_video(
+        video_file_with_user_details["video_frame"])
+    emit("processed_video", final_video_bytes,
+         room=video_file_with_user_details["username"])
 
 
-# @socketio.on('my broadcast event', namespace='/test')
-# def test_message(message):
-#     emit('my response', {'data': message['data']}, broadcast=True)
+@socketio.on('recognize_face')
+def recognize_face_in_video(video_file_with_user_details):
+    print("video file receiving")
+    fr = RecognizeFace()
+    final_video_bytes = fr.process_video(
+        video_file_with_user_details["video_frame"])
+    emit("processed_video", final_video_bytes,
+         room=video_file_with_user_details["username"])
 
 
 @socketio.on('connect')
 def test_connect():
-    print("connected to server")
     emit('messageChannel', {'data': 'Connected'})
     print("message send successfuly")
+
+
+@socketio.on("register_user")
+def register_user(user_details):
+    join_room(user_details["username"])
+    print("joined room")
 
 
 @socketio.on('disconnect', namespace='/test')
