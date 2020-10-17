@@ -4,10 +4,12 @@ docker build . -t <app_name>
 
 docker run -p <port_no>:8081 <app_name>
 
-# Socket implementation along with Yolo object detection
+# Socket implementation along with Yolo object detection and Face Recognition
 
 This project will recieve video frames in blob format via socket from frontend and run yolo detection and 
 return the video with the boundaries and object label with probabilities around them.
+
+Now added support for recognizing Faces in the video and draw boundary around them.
 
 frontend for the project can be found in Vue js at below mention repo URL:
 
